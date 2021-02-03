@@ -4,12 +4,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Gui {
-
+    private  static final JTextArea OutputArea = new JTextArea(5,10);
     JPanel map = new JPanel();
 
     //implementing map
 
-    JPanel output = new JPanel();
+    public static JScrollPane Output(){ //output
+        JPanel OutputPanel = new JPanel();
+
+        OutputPanel.setBackground(Color.LIGHT_GRAY);
+        JScrollPane scrollPane = new JScrollPane(OutputArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        OutputPanel.add(scrollPane,BorderLayout.CENTER);
+        OutputArea.setEditable(false);
+        OutputPanel.add(scrollPane);
+        OutputPanel.setVisible(true);
+        return scrollPane;
+    }
+    public static void addText(String s){
+        OutputArea.setText(OutputArea.getText() + "\n" + s);
+    }
+
 
     //implementing output terminal
 
@@ -41,6 +56,7 @@ public class Gui {
         jfr.setLayout(new BorderLayout());
         jfr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jfr.add(gui.text(),BorderLayout.SOUTH);
+        jfr.add(gui.Output(),BorderLayout.WEST);
         jfr.setResizable(false);
         jfr.setVisible(true);
     }
