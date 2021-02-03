@@ -12,13 +12,28 @@ class Player2{
 
 public class Gui {
     public JTextArea textArea;
+    private  static final JTextArea OutputArea = new JTextArea(5,10);
 
-    JPanel map = new JPanel();
-
-    //implementing map
+    //map
 
 
-    public Component input() {
+    public static JScrollPane Output(){ //output
+        JPanel OutputPanel = new JPanel();
+
+        OutputPanel.setBackground(Color.LIGHT_GRAY);
+        JScrollPane scrollPane = new JScrollPane(OutputArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        OutputPanel.add(scrollPane,BorderLayout.CENTER);
+        OutputArea.setEditable(false);
+        OutputPanel.add(scrollPane);
+        OutputPanel.setVisible(true);
+        return scrollPane;
+    }
+    public static void addText(String s){
+        OutputArea.setText(OutputArea.getText() + "\n" + s);
+    }
+
+    public Component text() {
         JPanel input = new JPanel();
         JTextField textField = new JTextField("",83);
 
@@ -48,8 +63,9 @@ public class Gui {
         jfr.setSize(1000, 600);
         jfr.setLayout(new BorderLayout());
         jfr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jfr.add(gui.input(),BorderLayout.PAGE_END);
-        jfr.pack();
+
+        jfr.add(gui.text(),BorderLayout.SOUTH);
+        jfr.add(gui.Output(),BorderLayout.WEST);
         jfr.setResizable(false);
         jfr.setVisible(true);
     }
