@@ -1,28 +1,37 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+class Player1{
+    public static String name;
+}
+
+class Player2{
+    public static String name;
+}
 
 public class Gui {
+    public JTextArea textArea;
 
     JPanel map = new JPanel();
 
     //implementing map
 
-    JPanel output = new JPanel();
 
-    //implementing output terminal
-
-    public Component text() {
+    public Component input() {
         JPanel input = new JPanel();
         JTextField textField = new JTextField("",83);
 
         Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String in = textField.getText();
+                Player1.name = textField.getText();
+                textArea.append(Player1.name + "\n");
                 textField.setText("");
-                System.out.println(in);//prints to console (debugging)
+
+                Player2.name = textField.getText();
+                textArea.append(Player2.name + "\n");
+                textField.setText("");
             }
         };
 
@@ -32,7 +41,6 @@ public class Gui {
         return input;
     }
 
-
     public static void main(String[] args) {
         Gui gui = new Gui();
 
@@ -40,7 +48,8 @@ public class Gui {
         jfr.setSize(1000, 600);
         jfr.setLayout(new BorderLayout());
         jfr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jfr.add(gui.text(),BorderLayout.SOUTH);
+        jfr.add(gui.input(),BorderLayout.PAGE_END);
+        jfr.pack();
         jfr.setResizable(false);
         jfr.setVisible(true);
     }
