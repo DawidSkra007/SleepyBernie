@@ -107,7 +107,7 @@ public class Draw extends JComponent {
         Rectangle2D.Double MiddleEast = new Rectangle2D.Double(572, 338, 30, 30);
         g2.fill(MiddleEast);
         g2.draw(MiddleEast);
-        g2.drawString("MiddleEast", 572, 338);
+        g2.drawString("Middle East", 572, 338);
 
         Rectangle2D.Double Japan = new Rectangle2D.Double(861, 213, 30, 30);
         g2.fill(Japan);
@@ -407,24 +407,46 @@ public class Draw extends JComponent {
     	Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.WHITE);
         g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        g2.drawString("1", 191+12, 150+20);
-        
-        
-        
+        g2.drawString("1", 255+12, 161+20);
+        g2.drawString("1", 146+12, 86+20);
+        g2.drawString("1", 123+12, 144+20);
+        g2.drawString("1", 314+12, 61+20);
+        g2.drawString("1", 205+12, 235+20);
+        g2.drawString("1", 135+12, 219+20);
+        g2.drawString("1", 140+12, 299+20);
+        g2.drawString("1", 45+12, 89+20);
+        g2.drawString("1", 370+12, 199+20);
+        g2.drawString("1", 398+12, 280+20);
+        g2.drawString("1", 465+12, 270+20);
+        g2.drawString("1", 547+12, 180+20);
+        g2.drawString("1", 460+12, 200+20);
+        g2.drawString("1", 393+12, 127+20);
+        g2.drawString("1", 463+12, 122+20);
+        g2.drawString("1", 628+12, 227+20);
+        g2.drawString("1", 679+12, 332+20);
+        g2.drawString("1", 572+12, 338+20);
+        g2.drawString("1", 861+12, 213+20);
+        g2.drawString("1", 645+12, 152+20);
+        g2.drawString("1", 763+12, 70+20);
+        g2.drawString("1", 827+12, 94+20);
+        g2.drawString("1", 751+12, 360+20);
+        g2.drawString("1", 750+12, 140+20);
+        g2.drawString("1", 695+12, 108+20);
+        g2.drawString("1", 760+12, 216+20);
+        g2.drawString("1", 735+12, 277+20);
+        g2.drawString("1", 213+12, 352+20);
+        g2.drawString("1", 221+12, 426+20);
+        g2.drawString("1", 289+12, 415+20);
+        g2.drawString("1", 233+12, 523+20);
+        g2.drawString("1", 496+12, 462+20);
+        g2.drawString("1", 440+12, 393+20);
+        g2.drawString("1", 510+12, 532+20);
+        g2.drawString("1", 499+12, 354+20);
+        g2.drawString("1", 547+12, 432+20);
+        g2.drawString("1", 586+12, 545+20);
+        g2.drawString("1", 889+12, 537+20);
+        g2.drawString("1", 850+12, 429+20);
+        g2.drawString("1", 813+12, 526+20);
+        g2.drawString("1", 771+12, 454+20);
     }
 }
