@@ -63,8 +63,10 @@ public class Sprint1 {
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
+					 territory = territory.replaceAll("\\s","");
+
 					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+						if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 							if (board.getOccupier(i) == 0) {
 								nam1 = true;
 								board.addUnits(i, 0, 3);
@@ -83,8 +85,10 @@ public class Sprint1 {
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
+					territory = territory.replaceAll("\\s","");
+
 					for (int i = 0; i < GameData.NUM_COUNTRIES;i++) {
-						if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+						if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ){
 							if (board.getOccupier(i) == n) {
 								board.addUnits(i,n,1);
 								ui.displayMap();
@@ -106,8 +110,10 @@ public class Sprint1 {
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
+					territory = territory.replaceAll("\\s","");
+
 					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+						if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 							if (board.getOccupier(i) == 1) {
 								nam2 = true;
 								board.addUnits(i, 1, 3);
@@ -127,8 +133,10 @@ public class Sprint1 {
 				territory = ui.getCommand();
 				ui.displayString("> " + territory);
 
+				territory = territory.replaceAll("\\s","");
+
 				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-					if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+					if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 						if (board.getOccupier(i) == n) {
 							board.addUnits(i,n,1);
 							ui.displayMap();
@@ -151,8 +159,10 @@ public class Sprint1 {
 				territory = ui.getCommand();
 				ui.displayString("> " + territory);
 
+				territory = territory.replaceAll("\\s","");
+
 				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-					if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+					if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 						if (board.getOccupier(i) == 1) {
 							nam2 = true;
 							board.addUnits(i, 1, 3);
@@ -171,8 +181,10 @@ public class Sprint1 {
 				territory = ui.getCommand();
 				ui.displayString("> " + territory);
 
+				territory = territory.replaceAll("\\s","");
+
 				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-					if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+					if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 						if (board.getOccupier(i) == n) {
 							board.addUnits(i,n,1);
 							ui.displayMap();
@@ -195,8 +207,10 @@ public class Sprint1 {
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
+					territory = territory.replaceAll("\\s","");
+
 					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+						if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 							if (board.getOccupier(i) == 0) {
 								nam1 = true;
 								board.addUnits(i, 0, 3);
@@ -216,8 +230,10 @@ public class Sprint1 {
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
+					territory = territory.replaceAll("\\s","");
+
 					for (int i = 0; i < GameData.NUM_COUNTRIES;i++) {
-						if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+						if (territory.toLowerCase().equals(GameData.COUNTRY_NAMES[i].toLowerCase().replaceAll("\\s","")) || territory.toLowerCase().equals(GameData.COUNTRY_SIMILAR[i].toLowerCase().replaceAll("\\s","")) ) {
 							if (board.getOccupier(i) == n) {
 								board.addUnits(i,n,1);
 								ui.displayMap();
