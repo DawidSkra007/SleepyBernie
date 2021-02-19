@@ -50,17 +50,14 @@ public class Sprint1 {
 			player2Roll = Dice.diceRoll(2);
 			ui.displayString("Player 2 " + "rolled " + player2Roll);
 		}
-		boolean first = false;
+
 		if (player1Roll > player2Roll) {
-			first = true;
-		}
 
-
-		while (placement != 24) {//24 // 4 for testing
+			while (placement != 24) {
 				boolean nam1 = false;
 				int neutralCount = 0, n = 2;
 
-			if (first) {//player 1 gets to place units
+				//player 1 gets to place units
 				while (!nam1) {
 					ui.displayString("Player 1: Enter territory to place 3 of your units");
 					territory = ui.getCommand();
@@ -68,7 +65,7 @@ public class Sprint1 {
 
 					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
 						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
-							if (board.getOccupier(i) == 0) {//1
+							if (board.getOccupier(i) == 0) {
 								nam1 = true;
 								board.addUnits(i, 0, 3);
 								ui.displayMap();
@@ -101,9 +98,54 @@ public class Sprint1 {
 					}
 				}
 
-			}//player 2 gets to place units
+				//player 2 gets to place units
+				boolean nam2 = false;
+				neutralCount = 0;
+				while (!nam2) {
+					ui.displayString("Player 2: Enter territory to place 3 of your units");
+					territory = ui.getCommand();
+					ui.displayString("> " + territory);
+
+					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+							if (board.getOccupier(i) == 1) {
+								nam2 = true;
+								board.addUnits(i, 1, 3);
+								ui.displayMap();
+								placement++;
+							} else {
+								ui.displayString("That is not your territory, try again.");
+								break;
+							}
+						}
+					}
+				}
+				//here player 2 adds 1 unit for each neutral
+			n = 2;
+			while (neutralCount != 4) {
+				ui.displayString("Player 2: Enter territory to place 1 unit for neutral " + n);
+				territory = ui.getCommand();
+				ui.displayString("> " + territory);
+
+				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+					if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+						if (board.getOccupier(i) == n) {
+							board.addUnits(i,n,1);
+							ui.displayMap();
+							neutralCount++;
+							n++;
+						} else {
+							ui.displayString("That territory is not controlled by that neutral player, try again.");
+							break;
+						}
+					}
+				}
+			}
+			}
+		} else {
+			while (placement != 24) {
 			boolean nam2 = false;
-			neutralCount = 0;
+			int neutralCount = 0, n = 2;
 			while (!nam2) {
 				ui.displayString("Player 2: Enter territory to place 3 of your units");
 				territory = ui.getCommand();
@@ -115,7 +157,6 @@ public class Sprint1 {
 							nam2 = true;
 							board.addUnits(i, 1, 3);
 							ui.displayMap();
-							first = true;
 							placement++;
 						} else {
 							ui.displayString("That is not your territory, try again.");
@@ -123,14 +164,59 @@ public class Sprint1 {
 						}
 					}
 				}
-				//here player 2 adds 1 unit for each neutral
-				n = 2;
-				while (neutralCount != 4) {
-					ui.displayString("Player 2: Enter territory to place 1 unit for neutral " + n);
+			}
+			//here player 2 adds 1 unit for each neutral
+			while (neutralCount != 4) {
+				ui.displayString("Player 2: Enter territory to place 1 unit for neutral " + n);
+				territory = ui.getCommand();
+				ui.displayString("> " + territory);
+
+				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+					if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
+						if (board.getOccupier(i) == n) {
+							board.addUnits(i,n,1);
+							ui.displayMap();
+							neutralCount++;
+							n++;
+						} else {
+							ui.displayString("That territory is not controlled by that neutral player, try again.");
+							break;
+						}
+					}
+				}
+			}
+
+				boolean nam1 = false;
+				neutralCount = 0;
+
+				//player 1 gets to place units
+				while (!nam1) {
+					ui.displayString("Player 1: Enter territory to place 3 of your units");
 					territory = ui.getCommand();
 					ui.displayString("> " + territory);
 
 					for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
+						if (territory.equals(GameData.COUNTRY_NAMES[i])) {
+							if (board.getOccupier(i) == 0) {
+								nam1 = true;
+								board.addUnits(i, 0, 3);
+								ui.displayMap();
+								placement++;
+							} else {
+								ui.displayString("That is not your territory, try again.");
+								break;
+							}
+						}
+					}
+				}
+				n = 2;
+				//here player 1 adds 1 unit for each of the neutrals
+				while (neutralCount != 4) {
+					ui.displayString("Player 1: Enter territory to place 1 unit for neutral " + n);
+					territory = ui.getCommand();
+					ui.displayString("> " + territory);
+
+					for (int i = 0; i < GameData.NUM_COUNTRIES;i++) {
 						if (territory.equals(GameData.COUNTRY_NAMES[i]) ) {
 							if (board.getOccupier(i) == n) {
 								board.addUnits(i,n,1);
@@ -147,8 +233,10 @@ public class Sprint1 {
 			}
 		}
 
-
 		return;
 	}
+
+
+
 }
 
