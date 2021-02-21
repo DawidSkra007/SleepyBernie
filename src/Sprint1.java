@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.concurrent.TimeUnit;
 import java.util.Random;
 
@@ -7,7 +8,9 @@ public class Sprint1 {
 		Board board = new Board();
 		UI ui = new UI(board);
 		int playerId, countryId,placement = 0;
-		String name,territory;
+		String name;
+		String territory;
+		Color colour;
 		int player1Roll,player2Roll;
 		int player1_Cards = 0, player2_Cards = 0;
 		
@@ -17,7 +20,9 @@ public class Sprint1 {
 		for (playerId=0; playerId<GameData.NUM_PLAYERS; playerId++) {
 			ui.displayString("Enter the name of player " + (playerId+1));
 			name = ui.getCommand();
+			colour = MapPanel.PLAYER_COLORS[board.getOccupier(playerId)];
 			ui.displayString("> " + name);
+			ui.displayString("> " + colour);
 		}
 	
 		// add units

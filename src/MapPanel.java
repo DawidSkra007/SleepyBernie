@@ -14,7 +14,7 @@ class MapPanel extends JPanel {
 	private static final Color TEXT_COLOR = Color.BLACK;
 	private static final int ADJACENT_LINE = 1;
 	private static final Color ADJACENT_COLOR = Color.LIGHT_GRAY;
-	private static final Color[] PLAYER_COLORS = {Color.RED,Color.BLUE,Color.YELLOW,Color.GREEN,Color.MAGENTA,Color.WHITE};
+	public static final Color[] PLAYER_COLORS = {Color.RED,Color.BLUE,Color.YELLOW,Color.GREEN,Color.MAGENTA,Color.WHITE};
 	public static final Color[] CONTINENT_COLORS = {Color.BLACK, Color.CYAN, Color.DARK_GRAY, Color.PINK, Color.ORANGE, Color.GRAY};
 	private static final int PLAYER_RADIUS = 8;
 	public static final int[][] COUNTRY_COORD = {
