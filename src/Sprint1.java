@@ -1,4 +1,5 @@
 import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 public class Sprint1 {
 
@@ -8,6 +9,7 @@ public class Sprint1 {
 		int playerId, countryId,placement = 0;
 		String name,territory;
 		int player1Roll,player2Roll;
+		int player1_Cards = 0, player2_Cards = 0;
 		
 		// display blank board
 		ui.displayMap();
@@ -248,7 +250,20 @@ public class Sprint1 {
 				}
 			}
 		}
-
+		//Initialise cards
+		Cards.cards();
+		Random rand = new Random(0);
+		ui.displayString("Type 'draw' after capturing a territory to draw a card");
+		while(ui.getCommand().equals("draw") || ui.getCommand().equals("Draw")){
+			ui.displayString("Player 1 or 2?");
+			if(ui.getCommand().equals("1")){
+				player1_Cards++;
+			}
+			else if(ui.getCommand().equals("1")){
+				player2_Cards++;
+			}
+			ui.displayString(Cards.draw(Cards.deck[rand.nextInt(42)]));
+		}
 		return;
 	}
 
