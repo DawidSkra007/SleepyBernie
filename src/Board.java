@@ -13,14 +13,28 @@ public class Board {
 		return;
 	}
 	
-	public void addUnits (int country, int player, int addNumUnits) {	
+	public void addUnits (int countryId, int player, int addNumUnits) {	
 		// prerequisite: country must be unoccupied or already occupied by this player
-		if (!occupied[country]) {
-			occupied[country] = true;
-			occupier[country] = player;
+		if (!occupied[countryId]) {
+			occupied[countryId] = true;
+			occupier[countryId] = player;
 		}
-		numUnits[country] = numUnits[country] + addNumUnits;
+		numUnits[countryId] = numUnits[countryId] + addNumUnits;
 		return;
+	}
+	
+	public void addUnits (Card card, Player player, int addNumUnits) {
+		addUnits(card.getCountryId(), player.getId(), addNumUnits);
+		return;
+	}
+	
+	public void addUnits (int countryId, Player player, int addNumUnits) {
+		addUnits(countryId, player.getId(), addNumUnits);
+		return;
+	}	
+	
+	public boolean checkOccupier (Player player, int countryId) {
+		return (occupier[countryId] == player.getId());
 	}
 	
 	public boolean isOccupied(int country) {

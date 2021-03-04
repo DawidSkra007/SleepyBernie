@@ -7,21 +7,15 @@ public final class GameData {
 	public static final int NUM_COUNTRIES = 42;
 	public static final int INIT_COUNTRIES_PLAYER = 9;
 	public static final int INIT_COUNTRIES_NEUTRAL = 6;
+	public static final int INIT_UNITS_PLAYER = 36;
+	public static final int INIT_UNITS_NEUTRAL = 24;
 	public static final String[] COUNTRY_NAMES = {
 		"Ontario","Quebec","NW Territory","Alberta","Greenland","E United States","W United States","Central America","Alaska",
 		"Great Britain","W Europe","S Europe","Ukraine","N Europe","Iceland","Scandinavia",
 		"Afghanistan","India","Middle East","Japan","Ural","Yakutsk","Kamchatka","Siam","Irkutsk","Siberia","Mongolia","China",
 		"E Australia","New Guinea","W Australia","Indonesia",
 		"Venezuela","Peru","Brazil","Argentina",
-		"Congo","N Africa","S Africa","Egypt","E Africa","Madagascar"};// for reference
-	public static final String[] COUNTRY_SIMILAR = {
-			"Ont","que","nw","alber","green","E USA", "W USA", "Central" , "alas",
-			"GB", "West europe","south europe" , "ukra","north europe", "ice" , "scan",
-			"afghan","in" ,"middle", "jap" ,"ural","yak","kam","Sia","irk","sib","mon","chin",
-			"east australia","guinea","west australia","indo",
-			"vene","peru","bra","argen",
-			"con","north africa" , "south africa" , "eg","east africa","mada"};
-
+		"Congo","N Africa","S Africa","Egypt","E Africa","Madagascar"};  // for reference
 	public static final int[][] ADJACENT = { 
 		{4,1,5,6,3,2},    // 0
 		{4,5,0},
