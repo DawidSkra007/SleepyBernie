@@ -159,6 +159,13 @@ public class Sprint3 {
 			currPlayer.subtractUnits(3);
 			board.addUnits(countryId, currPlayer, 3);
 			ui.displayMap();
+			if (currPlayer.getNumUnits() < 3) {
+				ui.inputPlacement(currPlayer, currPlayer);
+				countryId = ui.getCountryId();
+				currPlayer.subtractUnits(currPlayer.getNumUnits());
+				board.addUnits(countryId, currPlayer, currPlayer.getNumUnits());
+				ui.displayMap();
+			}
 		}
 
 		//COMBAT
