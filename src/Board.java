@@ -31,8 +31,12 @@ public class Board {
 	public void addUnits (int countryId, Player player, int addNumUnits) {
 		addUnits(countryId, player.getId(), addNumUnits);
 		return;
-	}	
-	
+	}
+	public void subtractUnits (int countryID, int subtractNumUnits){
+		numUnits[countryID] -= subtractNumUnits;
+	}
+
+
 	public boolean checkOccupier (Player player, int countryId) {
 		return (occupier[countryId] == player.getId());
 	}
