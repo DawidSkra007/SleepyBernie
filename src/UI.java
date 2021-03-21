@@ -216,4 +216,13 @@ public class UI {
 		return parse.getCountryId();
 	}
 	
+	//Game ends if NUM_PLAYERS is less than 2
+	public void displayGameWinner(Player player) {
+		if(GameData.NUM_PLAYERS <=1) {
+			displayString("\nGAME OVER");
+			displayString("\nCongrats to" + player);
+		}
+	}
+	
+	
 }
