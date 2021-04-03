@@ -5,9 +5,9 @@ public class Sprint3 {
 		Board board = new Board();
 		UI ui = new UI(board);
 		Player[] players = new Player[GameData.NUM_PLAYERS_PLUS_NEUTRALS];
-		Player currPlayer;
+		Player currPlayer, otherPlayer, defencePlayer;
 		Card card;
-		int playerId, countryId, numUnits, numCards,reinforcements=0,numTerritories=0,terrInContinent = 0;
+		int playerId, otherPlayerId, numUnits, numCards, attackUnits, defenceUnits, countryId, attackCountryId, defenceCountryId;
 		String name;
 		
 		ui.displayString("ENTER PLAYER NAMES");
@@ -15,13 +15,11 @@ public class Sprint3 {
 		for (playerId=0; playerId<GameData.NUM_PLAYERS_PLUS_NEUTRALS; playerId++) {
 			if (playerId < GameData.NUM_PLAYERS) {
 				name = ui.inputName(playerId);
-				numUnits = GameData.INIT_UNITS_PLAYER;
 			} else {
 				name = "Neutral " + (playerId - GameData.NUM_PLAYERS + 1);
 				ui.displayName(playerId,name);
-				numUnits = GameData.INIT_UNITS_NEUTRAL;
 			}
-			players[playerId] = new Player (playerId, name, numUnits);
+			players[playerId] = new Player (playerId, name, 0);
 		}
 		
 		ui.displayString("\nDRAW TERRITORY CARDS FOR STARTING COUNTRIES");
@@ -33,10 +31,9 @@ public class Sprint3 {
 			} else {
 				numCards = GameData.INIT_COUNTRIES_NEUTRAL;
 			}
-			for (int i=0; i<numCards; i++) {
+			for (int c=0; c<numCards; c++) {
 				card = deck.getCard();
 				ui.displayCardDraw(currPlayer, card);
-				currPlayer.subtractUnits(1);
 				board.addUnits(card, currPlayer, 1);
 			}
 		}
@@ -58,152 +55,102 @@ public class Sprint3 {
 		ui.displayRollWinner(currPlayer);
 		
 		ui.displayString("\nREINFORCE INITIAL COUNTRIES");
-		while (currPlayer.getNumUnits() > 0) {
-			ui.inputPlacement(currPlayer, currPlayer);
-			countryId = ui.getCountryId();
-			currPlayer.subtractUnits(3);
-			board.addUnits(countryId, currPlayer, 3);
+		for (int r=0; r<2*GameData.NUM_REINFORCE_ROUNDS; r++) {
+			ui.displayReinforcements(currPlayer, 3);
+			currPlayer.addUnits(3);
+			do {
+				ui.inputReinforcement(currPlayer);
+				currPlayer.subtractUnits(ui.getNumUnits());
+				board.addUnits(ui.getCountryId(), currPlayer, ui.getNumUnits());
+				ui.displayMap();
+			} while (currPlayer.getNumUnits() > 0);
 			ui.displayMap();
-			for (int i=GameData.NUM_PLAYERS; i<GameData.NUM_PLAYERS_PLUS_NEUTRALS; i++) {
-				ui.inputPlacement(currPlayer, players[i]);
+			for (int p=GameData.NUM_PLAYERS; p<GameData.NUM_PLAYERS_PLUS_NEUTRALS; p++) {
+				ui.inputPlacement(currPlayer, players[p]);
 				countryId = ui.getCountryId();
-				currPlayer.subtractUnits(1);
-				board.addUnits(countryId, currPlayer, 1);	
+				board.addUnits(countryId, players[p], 1);	
 				ui.displayMap();
 			}
 			playerId = (++playerId)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];
 		}
-
-		//seeing who goes first
-		ui.displayString("\nROLL DICE TO SEE WHO'S TURN IT IS FIRST");
+		
+		ui.displayString("\nROLL DICE TO SEE WHO TAKES THE FIRST TURN");
 		do {
 			for (int i=0; i<GameData.NUM_PLAYERS; i++) {
 				players[i].rollDice(1);
 				ui.displayDice(players[i]);
 			}
-		} while (players[0].getDie(0) == players[1].getDie(0));
+		} while (players[0].getDie(0) == players[1].getDie(0)); 
 		if (players[0].getDie(0) > players[1].getDie(0)) {
 			playerId = 0;
 		} else {
 			playerId = 1;
 		}
-		currPlayer = players[playerId]; //curr Player currently using his turn
+		currPlayer = players[playerId];
 		ui.displayRollWinner(currPlayer);
-
-		///////////////////////////////////////
-		//    START OF WHILE LOOP FOR TURN
-		while(players[0].getNumUnits() != 0 || players[1].getNumUnits() !=0) {
-			//calculating number of territories each player owns
-			for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-				if (board.getOccupier(i) == playerId) { // if territory belongs to [playerID], add reinforcements
-					numTerritories++;
-				}
-			}
-			if (numTerritories <= 8) { // if you own below eight territories, player will still receive a minimum of 3 reinforcements
-				reinforcements = 3;
-			} else {
-				reinforcements = numTerritories / 3;
-			}
-			//calculating number of continents each player owns
-			for (int j = 0; j < GameData.NUM_CONTINENTS; j++) {
-				for (int i = 0; i < GameData.NUM_COUNTRIES; i++) {
-					if (board.getOccupier(i) == playerId && GameData.CONTINENTS[i] == j) {
-						terrInContinent++;
-					}
-				}
-				switch (j) {
-					case 0: //N America
-						if (terrInContinent == 9) {
-							reinforcements += 5;
-						}
-						break;
-					case 1: // Europe
-						if (terrInContinent == 7) {
-							reinforcements += 5;
-						}
-						break;
-					case 2: // Asia
-						if (terrInContinent == 12) {
-							reinforcements += 7;
-						}
-						break;
-					case 3: // Australia
-						if (terrInContinent == 4) {
-							reinforcements += 2;
-						}
-						break;
-					case 4: // S America
-						if (terrInContinent == 4) {
-							reinforcements += 2;
-						}
-						break;
-					case 5: // Africa
-						if (terrInContinent == 6) {
-							reinforcements += 3;
-						}
-						break;
-					default:
-						break;
-				}
-				terrInContinent = 0;
-			}
-
-			currPlayer.addUnits(reinforcements);
-			ui.displayString("\n" + ui.makeLongName(currPlayer) + " receives " + reinforcements + " units to his army");
-			ui.displayString("\nPLACE REINFORCEMENTS ON BOARD");
-			//Place reinforcements on board
-			while (currPlayer.getNumUnits() > 0) {
-				ui.inputPlacement(currPlayer, currPlayer);
-				countryId = ui.getCountryId();
-				currPlayer.subtractUnits(3);
-				board.addUnits(countryId, currPlayer, 3);
+		
+		ui.displayString("\nSTART TURNS");
+		do {
+			otherPlayerId = (playerId+1)%GameData.NUM_PLAYERS;
+			otherPlayer = players[otherPlayerId];
+			
+			// 1. Reinforcements
+			numUnits = board.calcReinforcements(currPlayer);
+			currPlayer.addUnits(numUnits);
+			ui.displayReinforcements(currPlayer, numUnits);
+			do {
+				ui.inputReinforcement(currPlayer);
+				currPlayer.subtractUnits(ui.getNumUnits());
+				board.addUnits(ui.getCountryId(),currPlayer,ui.getNumUnits());	
 				ui.displayMap();
-				if (currPlayer.getNumUnits() < 3) {
-					ui.inputPlacement(currPlayer, currPlayer);
-					countryId = ui.getCountryId();
-					currPlayer.subtractUnits(currPlayer.getNumUnits());
-					board.addUnits(countryId, currPlayer, currPlayer.getNumUnits());
+			} while (currPlayer.getNumUnits() > 0);
+
+			// 2. Combat
+			do {
+				ui.inputBattle(currPlayer);
+				if (!ui.isTurnEnded()) {
+					attackUnits = ui.getNumUnits();
+					attackCountryId = ui.getFromCountryId();
+					defenceCountryId = ui.getToCountryId();
+					defencePlayer = players[board.getOccupier(defenceCountryId)];
+					if (board.getNumUnits(defenceCountryId) > 1) {
+						ui.inputDefence(otherPlayer,defenceCountryId);
+						defenceUnits = ui.getNumUnits();
+					} else {
+						defenceUnits = 1;
+					}
+					board.calcBattle(currPlayer,defencePlayer,attackCountryId,defenceCountryId,attackUnits,defenceUnits);
+					ui.displayBattle(currPlayer,defencePlayer);
+					ui.displayMap();
+					if ( board.isInvasionSuccess() && (board.getNumUnits(attackCountryId) > 1) ) {
+						ui.inputMoveIn(currPlayer,attackCountryId);
+						board.subtractUnits(attackCountryId, ui.getNumUnits());
+						board.addUnits(defenceCountryId, currPlayer, ui.getNumUnits());
+						ui.displayMap();
+					}
+				} 
+				
+			} while (!ui.isTurnEnded() && !board.isGameOver());
+
+			// 3. Fortify
+			if (!board.isGameOver()) {
+				ui.inputFortify(currPlayer);
+				if (!ui.isTurnEnded()) {
+					board.subtractUnits(ui.getFromCountryId(), ui.getNumUnits());
+					board.addUnits(ui.getToCountryId(), currPlayer, ui.getNumUnits());
 					ui.displayMap();
 				}
-			}
+			}			
 
-			//COMBAT
-			ui.displayString("START TURNS");
+			playerId = (playerId+1)%GameData.NUM_PLAYERS;
+			currPlayer = players[playerId];			
 
-			int[] attackingInfo = new int[2];
-			int defendingPlayer,defendingUnits;
-			boolean checkForSkip = false;
-
-			while(!checkForSkip) {
-				attackingInfo=ui.inputAttack(currPlayer);
-				checkForSkip = ui.checkSkip();
-				if(checkForSkip = true){
-					break;
-				}
-				if (currPlayer.getId() == 0) {
-					defendingPlayer = 1;
-				} else {
-					defendingPlayer = 0;
-				}
-				defendingUnits = ui.inputDefense(players[defendingPlayer], attackingInfo[1]);
-				ui.diceCombat(currPlayer, players[defendingPlayer], attackingInfo[2], defendingUnits,
-						attackingInfo[0], attackingInfo[1]);
-				ui.displayMap();
-
-			}
-
-			playerId = (++playerId) % GameData.NUM_PLAYERS;
-			currPlayer = players[playerId];
-			if(currPlayer.getNumUnits() == 0){
-				playerId = (++playerId) % GameData.NUM_PLAYERS;
-				currPlayer = players[playerId];
-			}
-			//       HERE
-			// FORTIFY
-
-			//    END OF WHILE LOOP FOR TURN
-		}
+		} while (!board.isGameOver());
+		
+		ui.displayWinner(players[board.getWinner()]);
+		ui.displayString("GAME OVER");
+		
 		return;
 	}
 

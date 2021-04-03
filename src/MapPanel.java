@@ -97,7 +97,7 @@ class MapPanel extends JPanel {
         }
         // Display countries
         for (int i=0; i<GameData.NUM_COUNTRIES; i++) {
-            g2.setColor(CONTINENT_COLORS[GameData.CONTINENTS[i]]);
+            g2.setColor(CONTINENT_COLORS[GameData.CONTINENT_IDS[i]]);
             xPos = COUNTRY_COORD[i][0] - COUNTRY_RADIUS;
             yPos = COUNTRY_COORD[i][1] - COUNTRY_RADIUS;
 			Ellipse2D.Double ellipse = new Ellipse2D.Double(xPos,yPos,2*COUNTRY_RADIUS,2*COUNTRY_RADIUS);

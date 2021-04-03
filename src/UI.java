@@ -1,6 +1,4 @@
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.Locale;
 import javax.swing.JFrame;
 
 public class UI {
@@ -30,8 +28,28 @@ public class UI {
 		return;
 	}
 	
-	public String makeLongName (Player player) {
-		return player.getName() + " (" + mapPanel.getColorName(player.getId()) + ") ";
+	public int getCountryId () {
+		return parse.getCountryId();
+	}
+	
+	public int getNumUnits () {
+		return parse.getNumUnits();
+	}	
+	
+	public boolean isTurnEnded() {
+		return parse.isTurnEnded();
+	}
+	
+	public int getFromCountryId () {
+		return parse.getFromCountryId();
+	}
+	
+	public int getToCountryId () {
+		return parse.getToCountryId();
+	}
+	
+	private String makeLongName (Player player) {
+		return player.getName() + " (" + mapPanel.getColorName(player.getId()) + ")";
 	}
 	
 	public void displayMap () {
@@ -64,6 +82,41 @@ public class UI {
 		return;
 	}
 	
+	public void displayReinforcements (Player player, int numUnits) {
+		displayString(makeLongName(player) + " gets " + numUnits + " reinforcements.");
+		return;
+	}
+	
+	public void displayNumUnits (Player player) {
+		String message = makeLongName(player) + " has " + player.getNumUnits() + " units";
+		displayString(message);
+		return;
+	}
+	
+	public void displayBattle (Player attackPlayer, Player defencePlayer) {
+		String message;
+		message = makeLongName(attackPlayer) + "'s roll was " + attackPlayer.getDice() + " and ";
+		message += makeLongName(defencePlayer) + "'s roll was " + defencePlayer.getDice();
+		displayString(message);
+		if (attackPlayer.getBattleLoss()==1) {
+			message = makeLongName(attackPlayer) + " loses 1 unit and ";
+		} else {
+			message = makeLongName(attackPlayer) + " loses " + attackPlayer.getBattleLoss() + " units and ";			
+		}
+		if (defencePlayer.getBattleLoss()==1) {
+			message += makeLongName(defencePlayer) + " loses 1 unit";	
+		} else {
+			message += makeLongName(defencePlayer) + " loses " + defencePlayer.getBattleLoss() + " units";		
+		}
+		displayString(message);
+		return;
+	}
+	
+	public void displayWinner (Player player) {
+		displayString(makeLongName(player) + " wins the game!");
+		return;
+	}
+		
 	public String inputName (int playerId) {
 		String response;
 		displayString("Enter the name for player " + (playerId+1) + " (" + mapPanel.getColorName(playerId) + "):");
@@ -73,156 +126,149 @@ public class UI {
 		return response;		
 	}
 		
-	public void inputPlacement (Player byPlayer, Player forPlayer) {
+	public void inputReinforcement (Player player) {
 		String response, message;
-		boolean placementOK = false;
+		boolean responseOK = false;
 		do {
-			message = makeLongName(byPlayer) + ": Enter a country to reinforce with ";
-			if (byPlayer.equals(forPlayer)) {
-				message += "your own units";				
-			} else {
-				message += makeLongName(forPlayer) + "'s units";
-			}
+			message = makeLongName(player) + ": REINFORCE: Enter a country to reinforce and the number of units";
 			displayString(message);
 			response = commandPanel.getCommand();
 			displayString(PROMPT + response);
-			parse.countryId(response);
+			parse.countryNumber(response);
 			if (parse.isError()) {
-				displayString("Error: Not a country");
+				displayString("Error: Incorrect command");
+			} else if (board.getOccupier(getCountryId()) != player.getId()) {
+				displayString("Error: Cannot place the units in that country");
+			} else if (parse.getNumUnits() > player.getNumUnits()) {
+				displayString("Error: Not enough units");
 			} else {
-				if (!board.checkOccupier(forPlayer, parse.getCountryId())) {
-					displayString("Error: Cannot place the units on that country");
-				} else {
-					placementOK = true;
-				}
+				responseOK = true;
 			}
-		} while (!placementOK);
+		} while (!responseOK);
 		return;
 	}
-	public int[] inputAttack(Player byPlayer) {
-		String response;
-		String country_Attacking, country_Defending;
-		int units_Attacking;
-		int[] return_values = new int[3];
-		boolean country1_OK = false;
-		boolean country2_OK = false;
+
+	public void inputPlacement (Player byPlayer, Player forPlayer) {
+		String response, message;
+		boolean responseOK = false;
 		do {
-			displayString("\n" + makeLongName(byPlayer) +
-					"Enter country to attack from, country to attack and number of units to use, or enter skip");
-			displayString("\n separate each input by a space");
+			message = makeLongName(byPlayer) + ": REINFORCE: Enter a country occupied by " + makeLongName(forPlayer) + " to reinforce by 1 unit";
+			displayString(message);
 			response = commandPanel.getCommand();
 			displayString(PROMPT + response);
-
-			country_Attacking = response.substring(0, response.indexOf(" "));
-			response = response.substring(response.indexOf(" "));
-			country_Defending = response.substring(0, response.indexOf(" "));
-			response = response.substring(response.indexOf(" "));
-			units_Attacking = Integer.parseInt(response);
-
-			parse.countryId((country_Attacking));
-
+			parse.country(response);
 			if (parse.isError()) {
 				displayString("Error: Not a country");
+			} else if (board.getOccupier(getCountryId()) != forPlayer.getId()) {
+				displayString("Error: Cannot place the units in that country");
 			} else {
-				if (!board.checkOccupier(byPlayer, parse.getCountryId())) {
-					displayString("Error: Cannot attack from that country");
-				}
-				else{country1_OK =true;}
+				responseOK = true;
 			}
-			return_values[0] = parse.getCountryId();
-			if(units_Attacking > parse.getNumUnits()-1 || units_Attacking > 3){
-				displayString("Not enough units in country or more than 3 units have been selected");
-				country1_OK = false;
-			}
-			parse.countryId(country_Defending);
-			if (parse.isError()) {
-				displayString("Error: Not a country");
-			}
-			else{country2_OK = true;}
-			//*****check adjacent******
-
-				return_values[1] = parse.getCountryId();
-				return_values[2] = units_Attacking;
-			}
-
-			while (!country1_OK && !country2_OK) ;
-			return return_values;
+		} while (!responseOK);
+		return;
 	}
-	public int inputDefense(Player defender, int countryDefending){
-		int defenders;
-		boolean unitsOK = false;
+
+	public void inputBattle (Player player) {
+		String response, message;
+		boolean responseOK = false;
 		do {
-			displayString("Enter number of units to attack with");
-			defenders = Integer.parseInt(commandPanel.getCommand());
-			if(defenders > board.getNumUnits(countryDefending) || defenders > 2){
-				displayString("not enough units or more than 2 units have been selected");
-			}
-			else{
-				unitsOK = true;
-			}
-		}while(!unitsOK);
-		return defenders;
-	}
-	public void diceCombat(Player attacker, Player defender, int unitsAttacking, int unitsDefending, int countryAttacking,
-						   int countryDefending){
-		ArrayList<Integer> attackerRolls = new ArrayList<>();
-		ArrayList<Integer> defenderRolls = new ArrayList<>();
-		int attackerHighest = 0;
-		int defenderHighest = 0;
-		int dec_Attacker = 0;int dec_Defender = 0;
-		attacker.rollDice(unitsAttacking-1);
-		attackerRolls = attacker.getDice();
-		defender.rollDice(unitsDefending-1);
-		defenderRolls = defender.getDice();
-		for(int i = 1; i<unitsAttacking-1 ; i++){
-			if(attackerRolls.get(i) > attackerHighest){
-				attackerHighest = attackerRolls.get(i);
-			}
-		}
-		if(attackerRolls.get(0)>defenderRolls.get(0)){
-			dec_Defender++;
-		}
-		else{
-			dec_Attacker++;
-		}
-		if(unitsDefending>1) {
-			if (attackerHighest > defenderRolls.get(1)) {
-				dec_Defender++;
+			message = makeLongName(player) + ": ATTACK: Enter country to attack from, country to attack and number of units to use, or enter skip";
+			displayString(message);
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			parse.countryCountryNumber(response);
+			if (parse.isError()) {
+				displayString("Error: Incorrect command");
+			} else if (parse.isTurnEnded()) {
+				responseOK = true;
+			} else if (board.getOccupier(getFromCountryId()) != player.getId()) {
+				displayString("Error: Cannot invade from that country");
+			} else if (board.getOccupier(getToCountryId()) == player.getId()) {
+				displayString("Error: Cannot invade your own country");
+			} else if (!board.isAdjacent(getFromCountryId(),parse.getToCountryId())) {
+				displayString("Error: Countries not neighbours");				
+			} else if (getNumUnits() >= board.getNumUnits(getFromCountryId())) {
+				displayString("Error: Not enough units in the attacking country, must leave 1 behind");
+			} else if (board.getNumUnits(getFromCountryId()) < GameData.ATTACK_MIN_IN_COUNTRY) {
+				displayString("Error: Must have 2 or more units in the attacking country");
+			} else if (parse.getNumUnits() > GameData.ATTACK_MAX) {
+				displayString("Error: The maximum number of units that can used to attack is 3");
 			} else {
-				dec_Attacker++;
+				responseOK = true;
 			}
-		}
-		displayString(attacker.getName() + "'s rolls were " + attackerRolls.toString() + " and " + defender.getName() +
-				" 's rolls were "+defenderRolls.toString() );
-		displayString(attacker.getName() + " loses " + dec_Attacker + " units and " + defender.getName() + " loses " +
-					dec_Defender + " units");
-		board.subtractUnits(countryAttacking,dec_Attacker);
-		board.subtractUnits(countryDefending,dec_Defender);
-		attacker.subtractUnits(dec_Attacker);
-		defender.subtractUnits(dec_Defender);
+		} while (!responseOK);
+		return;
+	}
+	
+	public void inputDefence (Player player, int countryId) {
+		String response, message;
+		boolean responseOK = false;
+		do {
+			message = makeLongName(player) + ": DEFEND: Enter number of units to defend with";
+			displayString(message);
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			parse.number(response);
+			if (parse.isError()) {
+				displayString("Error: Incorrect command");
+			} else if (getNumUnits() > GameData.DEFEND_MAX) {
+				displayString("Error: Maximum of 2 defenders");
+			} else if (getNumUnits() > board.getNumUnits(countryId)) {
+				displayString("Error: Not enough units in the country");
+			} else {
+				responseOK = true;
+			}
+		} while (!responseOK);
+		return;		
+	}
 
-	}
-	public boolean checkSkip(){
-		boolean check=false;
-		if((commandPanel.getCommand()).equalsIgnoreCase("skip")){
-			check = true;
-		}
-		return check;
-	}
-
-
-	
-	public int getCountryId () {
-		return parse.getCountryId();
-	}
-	
-	//Game ends if NUM_PLAYERS is less than 2
-	public void displayGameWinner(Player player) {
-		if(GameData.NUM_PLAYERS <=1) {
-			displayString("\nGAME OVER");
-			displayString("\nCongrats to" + player);
-		}
+	public void inputMoveIn (Player player, int attackCountryId) {
+		String response, message;
+		boolean responseOK = false;
+		do {
+			message = makeLongName(player) + ": MOVE IN: How many units do you wish to move in";
+			displayString(message);
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			parse.number(response);
+			if (parse.isError()) {
+				displayString("Error: Incorrect command");
+			} else if (getNumUnits() >= board.getNumUnits(attackCountryId)) {
+				displayString("Error: Insufficient units in attacking country, note you must leave at least 1 behind");
+			} else {
+				responseOK = true;
+			}
+		} while (!responseOK);
+		return;		
 	}
 	
-	
+	public void inputFortify (Player player) {
+		String response, message;
+		boolean responseOK = false;
+		do {
+			message = makeLongName(player) + ": FORTIFY: Enter country to move units from, country to fortify and number of units to move, or enter skip";
+			displayString(message);
+			response = commandPanel.getCommand();
+			displayString(PROMPT + response);
+			parse.countryCountryNumber(response);
+			if (parse.isError()) {
+				displayString("Error: Incorrect command");
+			} else if (parse.isTurnEnded()) {
+				responseOK = true;
+			} else if (board.getOccupier(getFromCountryId()) != player.getId()) {
+				displayString("Error: Cannot move from the origin country, you do not occupy it");
+			} else if (board.getOccupier(getToCountryId()) != player.getId()) {
+				displayString("Error: Cannot move to the destination country, you do not occupy it");
+			} else if (!board.isConnected(getFromCountryId(),parse.getToCountryId())) {
+				displayString("Error: Countries are not connected by your occupied territories");				
+			} else if (getNumUnits() >= board.getNumUnits(getFromCountryId())) {
+				displayString("Error: Not enough units in the origin country, note you must leave at least 1 behind");
+			} else {
+				responseOK = true;
+			}
+		} while (!responseOK);
+		return;		
+	}
 }
+
+
