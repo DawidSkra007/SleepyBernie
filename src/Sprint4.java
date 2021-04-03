@@ -161,10 +161,10 @@ public class Sprint4 {
 				currPlayer.addCard(card);
 			}
 			if(currPlayer.getCards() == 5){
-				ui.inputExchange(currPlayer);
+				ui.exchange(currPlayer);
 			}
 			if(currPlayer.checkExchangeable()){
-				ui.inputExchange(currPlayer);
+				ui.exchange(currPlayer);
 			}
 
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
