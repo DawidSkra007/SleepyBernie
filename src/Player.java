@@ -15,7 +15,7 @@ public class Player {
 		numUnits = inNumUnits;
 		return;
 	}
-	public void addCard(Card card){
+	public void addCard(Card card) {
 		cards.add(card);
 		switch(card.getInsigniaID()) {
 			case 0:
@@ -32,7 +32,7 @@ public class Player {
 	}
 	public boolean checkExchangeable() {
 
-		if (cards.size() >= 3 ){
+		if (cards.size() >= 3 ) {
 			if(numInfantry>=3){
 				return  true;
 			}

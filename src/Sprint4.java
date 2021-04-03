@@ -1,5 +1,5 @@
 
-public class Sprint3 {
+public class Sprint4 {
 
 	public static void main (String args[]) {	   
 		Board board = new Board();
@@ -106,6 +106,8 @@ public class Sprint3 {
 				ui.displayMap();
 			} while (currPlayer.getNumUnits() > 0);
 
+			boolean getCard = true;
+
 			// 2. Combat
 			do {
 				ui.inputBattle(currPlayer);
@@ -124,6 +126,10 @@ public class Sprint3 {
 					ui.displayBattle(currPlayer,defencePlayer);
 					ui.displayMap();
 					if ( board.isInvasionSuccess() && (board.getNumUnits(attackCountryId) > 1) ) {
+						if (getCard) {//add 1 territory card here:
+							ui.addTerCard(currPlayer);
+							getCard = false;
+						}
 						ui.inputMoveIn(currPlayer,attackCountryId);
 						board.subtractUnits(attackCountryId, ui.getNumUnits());
 						board.addUnits(defenceCountryId, currPlayer, ui.getNumUnits());
@@ -132,6 +138,12 @@ public class Sprint3 {
 				} 
 				
 			} while (!ui.isTurnEnded() && !board.isGameOver());
+
+			//if the number of territory cards is 5 or more, you must exchange
+			if(ui.checkNumCards(currPlayer)) {
+				ui.exchange(currPlayer);
+			}
+
 
 			// 3. Fortify
 			if (!board.isGameOver()) {
