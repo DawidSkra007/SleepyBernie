@@ -270,6 +270,82 @@ public class UI {
 		} while (!responseOK);
 		return;		
 	}
+	public void inputExchange(Player player){
+		String insignia;
+		if(player.getCards() == 5){
+			displayString("You have " + player.getNumInfantry() + " infantry, " + player.getNumCavalry() + " cavalry, " +
+					player.getNumArtillery()+ " artillery,enter which cards would you like to exchange");
+			displayString("enter 1 to exchange 3 infantry cards, 2 to exchange 3 cavalry cards," +
+					"3 to exchange 3 artillery cards or 4 to exchange 1 of each");
+			insignia = commandPanel.getCommand();
+
+		}
+		else {
+			displayString("You have " + player.getNumInfantry() + " infantry, " + player.getNumCavalry() + " cavalry, " +
+					player.getNumArtillery() + " artillery, press yes to exchange or no to end turn");
+			String response = commandPanel.getCommand();
+			if ((response).equalsIgnoreCase("yes")) {
+				displayString("Enter which cards you would like to exchange");
+				displayString("enter 1 to exchange 3 infantry cards, 2 to exchange 3 cavalry cards," +
+						"3 to exchange 3 artillery cards or 4 to exchange 1 of each");
+				insignia = commandPanel.getCommand();
+			}
+
+		else {
+				return;
+			}
+		}
+		int insigniaId = Integer.parseInt(insignia);
+		switch(insigniaId){
+			case 1:
+				if(player.getNumInfantry() < 3){
+					displayString("not enough cards");
+					inputExchange(player);
+				}
+				else {
+					player.subtractInfantry(3);
+					player.addUnits(4);
+					player.removeCards(insigniaId);
+				}
+				break;
+			case 2:
+				if(player.getNumCavalry() < 3){
+					displayString("not enough cards");
+					inputExchange(player);
+				}
+				else {
+					player.subtractCavalry(3);
+					player.addUnits(5);
+					player.removeCards(insigniaId);
+				}
+			break;
+			case 3:
+				if(player.getNumArtillery() < 3){
+					displayString("not enough cards");
+					inputExchange(player);
+				}
+				else {
+					player.subtractArtillery(3);
+					player.addUnits(6);
+					player.removeCards(insigniaId);
+				}
+				break;
+			case 4:
+				if(player.getNumInfantry() < 1 && player.getNumCavalry() < 1 && player.getNumArtillery() < 1){
+					displayString("not enough cards");
+					inputExchange(player);
+				}
+				else {
+					player.subtractInfantry(1);
+					player.subtractCavalry(1);
+					player.subtractArtillery(1);
+					player.addUnits(7);
+					player.removeCards(insigniaId);
+				}
+			break;
+		}
+
+	}
 }
 
 

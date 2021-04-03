@@ -141,7 +141,19 @@ public class Sprint3 {
 					board.addUnits(ui.getToCountryId(), currPlayer, ui.getNumUnits());
 					ui.displayMap();
 				}
-			}			
+			}
+			// 4. Receiving cards
+			if(board.isInvasionSuccess()){
+				card = deck.getCard();
+				ui.displayCardDraw(currPlayer, card);
+				currPlayer.addCard(card);
+			}
+			if(currPlayer.getCards() == 5){
+				ui.inputExchange(currPlayer);
+			}
+			if(currPlayer.checkExchangeable()){
+				ui.inputExchange(currPlayer);
+			}
 
 			playerId = (playerId+1)%GameData.NUM_PLAYERS;
 			currPlayer = players[playerId];			

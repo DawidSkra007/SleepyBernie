@@ -8,6 +8,8 @@ public class Player {
 	private int numUnits;
 	private ArrayList<Integer> dice = new ArrayList<Integer>();
 	private int battleLoss = 0;
+	private ArrayList<Card> cards = new ArrayList<Card>();
+	private int numInfantry=0,numCavalry=0,numArtillery=0;
 	
 	Player (int inId, String inName, int inNumUnits) {
 		id = inId;
