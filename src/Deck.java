@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Deck {
 
 	private ArrayList<Card> cards;
+
 	
 	Deck () {
 		int cardId;
@@ -10,6 +11,7 @@ public class Deck {
 		for (cardId=0; cardId<GameData.NUM_COUNTRIES; cardId++) {
 			cards.add(new Card(cardId, GameData.COUNTRY_NAMES[cardId]));
 		}
+
 		return;
 	}
 	
