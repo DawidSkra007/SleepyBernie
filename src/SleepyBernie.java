@@ -197,7 +197,7 @@ public class SleepyBernie implements Bot {
 		ArrayList<Card> myCards = player.getCards();
 		int[] c = {0,0,0,0};         
 		for(Card card: myCards){
-			c[card.getInsigniaId()]++;
+			c[card.getInsigniaID()]++;
 		}
 
 		if(c[0] >= 3){
@@ -448,12 +448,12 @@ public class SleepyBernie implements Bot {
 	Comparator<Attack> compareAttackByProb = new Comparator<Attack>() {
 		@Override
 		public int compare(Attack a, Attack b) {
-			return new Double(a.probability).compareTo(b.probability);
+			return Double.compare(a.probability, b.probability);
 		}
 	};
 	Comparator<Country> compareCountryByUnits = new Comparator<Country>(){
 		public int compare(Country a, Country b){
-			return new Integer(a.numUnits()).compareTo(new Integer(b.numUnits()));
+			return Integer.compare(a.numUnits(), b.numUnits());
 		}
 	};
 
