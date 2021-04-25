@@ -1,6 +1,6 @@
 // put your code here
 //SleepyBernie
-//Tested in provided Project
+//Testing in provided Project
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -102,8 +102,11 @@ public class YourTeamName {
 
     public String getDefence (int countryId) {
         String command = "";
-        // put your code here
-        command = "1";
+        if (board.getNumUnits(countryId) >= 2){
+            command += 2;
+        } else {
+            command += 1;
+        }
         return(command);
     }
 
@@ -144,7 +147,7 @@ public class YourTeamName {
     private int getMyId() { return player.getId(); }
 
     private int getEnemyId() {
-        if(getMyId() == 0) {
+        if  (getMyId() == 0) {
             return 1;
         }
         return 0;
